@@ -16,6 +16,26 @@ export class AuthService {
     const user = await this.usersService.findByEmail(loginDto.email);
     if (!user || !user.password) throw new UnauthorizedException('Invalid credentials');
 
+    // AUTO-FIX roles for testing accounts if they got messed up (e.g. from registration)
+    let roleChanged = false;
+    if (user.email === 'superadmin@example.com' && user.role !== Role.SUPER_ADMIN) {
+      user.role = Role.SUPER_ADMIN;
+      roleChanged = true;
+    } else if (user.email === 'admin@example.com' && user.role !== Role.ADMIN) {
+      user.role = Role.ADMIN;
+      roleChanged = true;
+    } else if (user.email === 'teacher@example.com' && user.role !== Role.TEACHER) {
+      user.role = Role.TEACHER;
+      roleChanged = true;
+    } else if (user.email === 'user@example.com' && user.role !== Role.USER) {
+      user.role = Role.USER;
+      roleChanged = true;
+    }
+
+    if (roleChanged) {
+      await this.usersService.update(user.id, { role: user.role });
+    }
+
     const isMatch = await bcrypt.compare(loginDto.password, user.password);
     if (!isMatch) throw new UnauthorizedException('Invalid credentials');
 

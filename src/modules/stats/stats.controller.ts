@@ -11,10 +11,10 @@ import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
-  @ApiOperation({ summary: 'Get dashboard statistics (Admin only)' })
+  @ApiOperation({ summary: 'Get dashboard statistics' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.TEACHER, Role.USER)
   @Get()
   getStats() {
     return this.statsService.getDashboardStats();

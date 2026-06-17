@@ -3,6 +3,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../auth/enums/role.enum';
 import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('File Uploads')
@@ -10,7 +13,8 @@ import { ApiTags, ApiOperation, ApiConsumes, ApiBody, ApiBearerAuth } from '@nes
 export class UploadsController {
   @ApiOperation({ summary: 'Upload an image' })
   @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.TEACHER, Role.ADMIN, Role.SUPER_ADMIN)
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     schema: {

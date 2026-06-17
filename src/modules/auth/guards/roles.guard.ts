@@ -23,6 +23,10 @@ export class RolesGuard implements CanActivate {
       return false; // User not found or has no role
     }
 
+    if (user.role === Role.SUPER_ADMIN) {
+      return true; // Super admin has access to all routes
+    }
+
     return requiredRoles.includes(user.role);
   }
 }

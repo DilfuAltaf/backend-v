@@ -61,10 +61,10 @@ export class BlogController {
 
   // --- Admin Endpoints ---
 
-  @ApiOperation({ summary: 'Get all articles (Admin)' })
+  @ApiOperation({ summary: 'Get all articles (Admin/Teacher)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.TEACHER)
   @Get('admin/articles')
   findAllAdmin(
     @Query('page') page?: number,
@@ -80,19 +80,19 @@ export class BlogController {
     });
   }
 
-  @ApiOperation({ summary: 'Get blog statistics (Admin)' })
+  @ApiOperation({ summary: 'Get blog statistics' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.TEACHER)
   @Get('admin/stats')
   getStats() {
     return this.blogService.getStats();
   }
 
-  @ApiOperation({ summary: 'Create article (Admin)' })
+  @ApiOperation({ summary: 'Create article (Admin/Teacher)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.ADMIN, Role.SUPER_ADMIN, Role.TEACHER)
   @Post('admin/articles')
   createArticle(@Body() dto: any, @Request() req) {
     return this.blogService.createArticle(dto, req.user.id);
@@ -107,7 +107,7 @@ export class BlogController {
     return this.blogService.updateArticle(id, dto);
   }
 
-  @ApiOperation({ summary: 'Delete article (Admin)' })
+  @ApiOperation({ summary: 'Delete article (Admin only)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN, Role.SUPER_ADMIN)

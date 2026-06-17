@@ -31,4 +31,9 @@ export class UsersService {
   async findByEmail(email: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { email } });
   }
+
+  async update(id: number, updateData: Partial<User>): Promise<User> {
+    await this.usersRepository.update(id, updateData);
+    return this.usersRepository.findOne({ where: { id } }) as Promise<User>;
+  }
 }

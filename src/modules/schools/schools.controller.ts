@@ -20,7 +20,7 @@ export class SchoolsController {
   @ApiOperation({ summary: 'Update school profile (Admin only)' })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.SUPER_ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDto: any) {
     return this.schoolsService.updateProfile(id, updateDto);

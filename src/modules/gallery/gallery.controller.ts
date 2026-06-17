@@ -13,7 +13,7 @@ import { Role } from '../auth/enums/role.enum';
 export class GalleryController {
   constructor(private readonly galleryService: GalleryService) {}
 
-  @Roles(Role.USER, Role.ADMIN, Role.SUPER_ADMIN)
+  @Roles(Role.USER, Role.TEACHER, Role.ADMIN, Role.SUPER_ADMIN)
   @Get()
   findAll() { return this.galleryService.findAll(); }
 
