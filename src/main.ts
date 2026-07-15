@@ -16,7 +16,7 @@ async function bootstrap() {
   // Global Validation
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    forbidNonWhitelisted: true,
+    // forbidNonWhitelisted: true, // Dimatikan karena beberapa controller masih pakai @Body() any
     transform: true,
   }));
 
